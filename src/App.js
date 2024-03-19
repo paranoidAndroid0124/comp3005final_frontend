@@ -1,5 +1,8 @@
 import React from 'react'
 
+// import {} from './containers'
+import {Navbar} from './components'
+
 const App = () => {
     return (
         <div>
