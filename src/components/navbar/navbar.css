@@ -1,0 +1,27 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #FF9B9B;
+    padding: 10px 16px;
+    margin-bottom: 10px;
+}
+
+.navbar-menu {
+    display: flex;
+    list-style-type: none;
+    gap: 30px;
+    margin: 0;
+    align-items: center;
+    float:right;
+    clear:both;
+}
+
+.logo {
+    color: white;
+}
+
+.navbar-menu li a{
+    text-decoration: none;
+    color: white;
+}
+
