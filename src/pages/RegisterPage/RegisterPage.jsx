@@ -11,9 +11,29 @@ function RegisterPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    alert(`${email},${password}`)
+    try {
+      const response = await fetch('http://localhost:3001/register', {
+        method: 'POST',
+        headers: {
+          'Content-type' : 'application/json'
+        },
+        body: JSON.stringify({email, password, firstName, lastName, phoneNumber, address})
+      })
+
+      if(!response.ok) {
+        throw new Error(`Http error status: ${response.status}`)
+      }
+
+      // Parse response as json object
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('There is a problem with the registration requrest:', error);
+      // TODO: handle error (err msg to user)
+      alert(`${email},${password}`)
+    }
   }
 
   return (
@@ -25,7 +45,7 @@ function RegisterPage() {
         <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
         <br></br>
         <div>Enter Password: </div>
-        <input type="text" value={password} onChange={(e) => setPassword(e.target.value)}></input>
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
         <br></br>
         <div>Enter First Name:</div>
         <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}></input>
