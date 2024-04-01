@@ -30,7 +30,7 @@ function RegisterPage() {
       const data = await response.json();
       console.log(data);
     } catch (error) {
-      console.error('There is a problem with the registration requrest:', error);
+      console.error('There is a problem with the registration request:', error);
       // TODO: handle error (err msg to user)
       alert(`${email},${password}`)
     }

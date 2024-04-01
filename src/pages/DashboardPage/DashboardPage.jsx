@@ -1,10 +1,10 @@
 import React from 'react'
-import { Navbar, AdminDashboard, MemberDashboard } from "../../components";
+import { Navbar, AdminDashboard, MemberDashboard, TrainerDashboard } from "../../components";
 // import { AdminDashboard } from "../../components/dashboard"
 
-function DashboardPage() {
+const DashboardPage = () => {
     // TODO: logic to fetch user role
-    const userRole = 'admin';
+    const userRole = 'member';
 
     // Determines which dashboard to render based on the role
     const renderDashboard = () => {
