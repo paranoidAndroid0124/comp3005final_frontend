@@ -3,15 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './App'
 
 // pages
-import { LoginPage, RegisterPage } from './pages';
+import { LoginPage, RegisterPage, DashboardPage, ProfilePage } from './pages';
 
 import {
     createBrowserRouter,
     RouterProvider,
     Route,
 } from "react-router-dom";
-import DashboardPage from "./pages/DashboardPage/DashboardPage";
-
 
 const router = createBrowserRouter([
     {
@@ -29,6 +27,10 @@ const router = createBrowserRouter([
     {
         path: "dashboard",
         element: <DashboardPage/>
+    },
+    {
+        path: "profile",
+        element: <ProfilePage/>
     }
 ]);
 

@@ -32,7 +32,6 @@ function RegisterPage() {
     } catch (error) {
       console.error('There is a problem with the registration request:', error);
       // TODO: handle error (err msg to user)
-      alert(`${email},${password}`)
     }
   }
 
