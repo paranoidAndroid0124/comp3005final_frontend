@@ -12,7 +12,7 @@ function ProfilePage() {
   const [address, setAddress] = useState("");
 
   // ---------------- WE WILL CHANGE HEALTH METRICS LATER ----------------
-  const [healthMetrics, setHealthMetrics] = useState("");
+  const [healthMetric, setHealthMetric] = useState("");
   const [fitnessGoals, setFitnessGoals] = useState("");
   const [fitnessAchievements, setFitnessAchievements] = useState("");
   
@@ -27,7 +27,7 @@ function ProfilePage() {
     
             const member = await response.json();
             setFitnessGoals(member.fitnessGoals)
-            setHealthMetrics(member.healthMetrics)
+            setHealthMetric(member.healthMetric)
             setFitnessAchievements(member.fitnessAchievements)
           } catch (error) {
             console.error('There is a problem with fetching user data:', error);
@@ -42,12 +42,15 @@ function ProfilePage() {
     event.preventDefault();
 
     try {
+        console.log("healthMetrics: ", healthMetric)
+        console.log("fitnessAchievements: ", fitnessAchievements)
+        console.log("fitnessGoals: ", fitnessGoals)
       const response = await fetch('http://localhost:3001/member/3/update', {
         method: 'POST',
         headers: {
           'Content-type' : 'application/json'
         },
-        body: JSON.stringify({healthMetrics, fitnessGoals, fitnessAchievements})
+        body: JSON.stringify({healthMetric, fitnessGoals, fitnessAchievements})
       })
 
       if(!response.ok) {
@@ -72,9 +75,7 @@ function ProfilePage() {
                 <h2>Fitness Goals:</h2>
             </div>
             <input
-                type="text"
-                value={fitnessGoals} 
-                onChange={(e) => setFitnessGoals(e.target.value)}
+                type="text" value={fitnessGoals} onChange={(e) => setFitnessGoals(e.target.value)}
             />
             <br></br>
             <br></br>
@@ -82,19 +83,15 @@ function ProfilePage() {
                 <h2>Fitness Achievements:</h2>
             </div>
             <input
-                type="text"
-                value={fitnessAchievements} 
-                onChange={(e) => setFitnessAchievements(e.target.value)}
+                type="text" value={fitnessAchievements} onChange={(e) => setFitnessAchievements(e.target.value)}
             />
             <br></br>
             <br></br>
             <div>
-                <h2>Health Metrics:</h2>
+                <h2>Health Metric:</h2>
             </div>
             <input
-                type="text"
-                value={healthMetrics} 
-                onChange={(e) => setHealthMetrics(e.target.value)}
+                value={healthMetric} onChange={(e) => setHealthMetric(e.target.value)} type="text" 
             />
             <br></br>
             <br></br>
