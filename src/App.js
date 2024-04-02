@@ -8,7 +8,10 @@ const App = () => {
     return (
         <div>
             <Navbar> </Navbar>
-            <h1>Hello World</h1>
+            <div>
+                <h1>Pulse Performance</h1>
+            </div>
+            
         </div>
     )
 }

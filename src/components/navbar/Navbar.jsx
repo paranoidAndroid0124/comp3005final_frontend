@@ -5,7 +5,7 @@ const Navbar = () => {
     return (
         <div className='navbar'>
             <div className='logo'>
-                Gym Name
+                Pulse Performance
             </div>
             <ul className='navbar-menu'>
                 <li><a href="/">Home</a></li>

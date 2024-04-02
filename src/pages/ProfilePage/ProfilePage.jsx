@@ -14,6 +14,7 @@ function ProfilePage() {
   // ---------------- WE WILL CHANGE HEALTH METRICS LATER ----------------
   const [healthMetrics, setHealthMetrics] = useState("");
   const [fitnessGoals, setFitnessGoals] = useState("");
+  const [fitnessAchievements, setFitnessAchievements] = useState("");
   
   useEffect(() => {
     async function handleLoad() {
@@ -25,8 +26,9 @@ function ProfilePage() {
             }
     
             const member = await response.json();
-            setEmail(member.email);
-            document.getElementById("email").innerHTML = email;
+            setFitnessGoals(member.fitnessGoals)
+            setHealthMetrics(member.healthMetrics)
+            setFitnessAchievements(member.fitnessAchievements)
           } catch (error) {
             console.error('There is a problem with fetching user data:', error);
             // TODO: handle error (err msg to user)
@@ -36,22 +38,69 @@ function ProfilePage() {
       handleLoad();
   }, []);
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:3001/member/3/update', {
+        method: 'POST',
+        headers: {
+          'Content-type' : 'application/json'
+        },
+        body: JSON.stringify({healthMetrics, fitnessGoals, fitnessAchievements})
+      })
+
+      if(!response.ok) {
+        throw new Error(`Http error status: ${response.status}`)
+      }
+
+      // Parse response as json object
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('There is a problem with the registration request:', error);
+      // TODO: handle error (err msg to user)
+    }
+  }
 
   return (
     <div>
       <Navbar></Navbar>
-        <form>
+      <h1>Profile: </h1>
+        <form onSubmit={handleSubmit}>
             <div>
-                Email: {email}
+                <h2>Fitness Goals:</h2>
             </div>
-            <span id="email"></span>
             <input
-                value={email} 
-                id="email"
+                type="text"
+                value={fitnessGoals} 
+                onChange={(e) => setFitnessGoals(e.target.value)}
             />
-                
+            <br></br>
+            <br></br>
+            <div>
+                <h2>Fitness Achievements:</h2>
+            </div>
+            <input
+                type="text"
+                value={fitnessAchievements} 
+                onChange={(e) => setFitnessAchievements(e.target.value)}
+            />
+            <br></br>
+            <br></br>
+            <div>
+                <h2>Health Metrics:</h2>
+            </div>
+            <input
+                type="text"
+                value={healthMetrics} 
+                onChange={(e) => setHealthMetrics(e.target.value)}
+            />
+            <br></br>
+            <br></br>
+            <input type="submit"></input>
+            
         </form>
-      profile
     </div>
   )
 }
