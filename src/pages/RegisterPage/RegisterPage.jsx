@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navbar } from '../../components'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import "./registerpage.css"
 function RegisterPage() {
 
@@ -10,6 +11,8 @@ function RegisterPage() {
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,6 +32,9 @@ function RegisterPage() {
       // Parse response as json object
       const data = await response.json();
       console.log(data);
+
+      localStorage.setItem("loggedIn", true)
+      navigate("/")
     } catch (error) {
       console.error('There is a problem with the registration request:', error);
       // TODO: handle error (err msg to user)
