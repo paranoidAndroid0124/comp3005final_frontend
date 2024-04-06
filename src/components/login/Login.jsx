@@ -1,10 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,11 +25,20 @@ function Login() {
       }
 
       // Parse response as text
-      const token = await  response.text();
+      // const token = await response.text();
       // For dev purposes
-      console.log(token);
+      // console.log(token);
       // store token
-      localStorage.setItem("token", token);
+      // localStorage.setItem("token", token);
+
+      const userId = await response.text();
+
+      console.log(userId)
+
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("loggedIn", true);
+
+      navigate("/")
 
     } catch (error) {
       console.error('There was a problem with the login request:', error);
@@ -52,6 +64,8 @@ function Login() {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
         />
+        <br></br>
+        <br></br>
         <button type={"submit"}>Login</button>
       </form>
 

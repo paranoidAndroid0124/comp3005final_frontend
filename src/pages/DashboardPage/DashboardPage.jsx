@@ -1,6 +1,5 @@
 import React from 'react'
 import { Navbar, AdminDashboard, MemberDashboard, TrainerDashboard } from "../../components";
-// import { AdminDashboard } from "../../components/dashboard"
 
 const DashboardPage = () => {
     // TODO: logic to fetch user role

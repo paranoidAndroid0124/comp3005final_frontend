@@ -16,19 +16,24 @@ function ProfilePage() {
   const [fitnessGoals, setFitnessGoals] = useState("");
   const [fitnessAchievements, setFitnessAchievements] = useState("");
   
+  const userId = localStorage.getItem("userId")
+
   useEffect(() => {
     async function handleLoad() {
         try {
-            const response = await fetch(`http://localhost:3001/member/3`)
+            const response = await fetch(`http://localhost:3001/member/${userId}`)
             
             if (!response.ok) {
                 throw new Error(`Http error status: ${response.status}`)
             }
     
             const member = await response.json();
-            setFitnessGoals(member.fitnessGoals)
-            setHealthMetric(member.healthMetric)
-            setFitnessAchievements(member.fitnessAchievements)
+
+            console.log("member.fitnessGoals: ", member.fitnessGoals)
+
+            setFitnessGoals(member.fitness_goals)
+            setHealthMetric(member.health_metric)
+            setFitnessAchievements(member.fitness_achievements)
           } catch (error) {
             console.error('There is a problem with fetching user data:', error);
             // TODO: handle error (err msg to user)
@@ -38,14 +43,13 @@ function ProfilePage() {
       handleLoad();
   }, []);
 
+  console.log("token working: ", localStorage.getItem("token"))
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-        console.log("healthMetrics: ", healthMetric)
-        console.log("fitnessAchievements: ", fitnessAchievements)
-        console.log("fitnessGoals: ", fitnessGoals)
-      const response = await fetch('http://localhost:3001/member/3/update', {
+      const response = await fetch(`http://localhost:3001/member/${userId}/update`, {
         method: 'POST',
         headers: {
           'Content-type' : 'application/json'
