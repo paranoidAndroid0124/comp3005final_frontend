@@ -25,17 +25,17 @@ function Login() {
       }
 
       // Parse response as text
-      // const token = await response.text();
+      const token = await response.text();
       // For dev purposes
-      // console.log(token);
+      console.log(token);
       // store token
-      // localStorage.setItem("token", token);
+      localStorage.setItem("token", token);
 
-      const userId = await response.text();
+      // const userId = await response.text();
 
-      console.log(userId)
+      // console.log(userId)
 
-      localStorage.setItem("userId", userId);
+      // localStorage.setItem("userId", userId);
       localStorage.setItem("loggedIn", true);
 
       navigate("/")

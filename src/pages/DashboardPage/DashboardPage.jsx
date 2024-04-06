@@ -3,7 +3,8 @@ import { Navbar, AdminDashboard, MemberDashboard, TrainerDashboard } from "../..
 
 const DashboardPage = () => {
     // TODO: logic to fetch user role
-    const userRole = 'member';
+    //const userRole = 'member';
+    const userRole = 'admin';
 
     // Determines which dashboard to render based on the role
     const renderDashboard = () => {
