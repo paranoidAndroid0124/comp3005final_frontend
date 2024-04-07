@@ -6,6 +6,7 @@ function AdminDashboard() {
     // states
     const [trainers, setTrainers] = useState([]);  // dynamically fetched
     const [selectedTrainer, setSelectedTrainer] = useState(null);
+    const [date, setDate] = useState("");
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [capacity, setCapacity] = useState(1);
@@ -71,12 +72,28 @@ function AdminDashboard() {
         event.preventDefault();
         console.log(selectedTrainer.value);
         try {
+            if (!date || !startTime || !endTime) {
+                console.error('Date, start time, and end time are required');
+                return;
+            }
+            // combine date and time
+            const startDateTime = `${date} ${startTime}:00`;
+            const endDateTime = `${date} ${endTime}:00`;
+
+            console.log('StartTime', startDateTime);
+
             const response = await fetch('http://localhost:3001/timeslots/add', {
                 method: 'POST',
                 headers: {
                     'Content-type' : 'application/json'
                 },
-                body: JSON.stringify({trainer: selectedTrainer.value, startTime, endTime, capacity, location})
+                body: JSON.stringify({
+                    trainer: selectedTrainer.value,
+                    startTime: startDateTime,
+                    endTime: endDateTime,
+                    capacity,
+                    location
+                })
             });
 
             if(!response.ok) {
@@ -100,6 +117,14 @@ function AdminDashboard() {
                     value={selectedTrainer}
                     onChange={handleTrainerChange}
                     options={trainers}
+                />
+                <div>
+                    <h3>date</h3>
+                </div>
+                <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
                 />
                 <div>
                     <h3>start time</h3>
