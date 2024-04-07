@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { useState, useEffect } from "react";
 
 function AdminDashboard() {
-    // states
+    // timeslot states
     const [trainers, setTrainers] = useState([]);  // dynamically fetched
     const [selectedTrainer, setSelectedTrainer] = useState(null);
     const [date, setDate] = useState("");
@@ -11,6 +11,8 @@ function AdminDashboard() {
     const [endTime, setEndTime] = useState("");
     const [capacity, setCapacity] = useState(1);
     const [location, setLocation] = useState("");
+    // equipment states
+    const [equipment, setEquipment] = useState([]);
 
     const fetchTrainers = async () => {
         try {
@@ -42,6 +44,7 @@ function AdminDashboard() {
         // TODO: code to run on component load
         console.log('Component was mounted');
        fetchTrainers();
+       fetchEquipment();
         console.log('trainer name were added');
     }, []);
 
@@ -105,6 +108,32 @@ function AdminDashboard() {
 
     };
 
+    const fetchEquipment = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/equipment', {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Http error status: ' + response.status);
+            }
+
+            const data = await response.json();
+            const equipments = data.map(equipment => ({
+                equipment_id: equipment.equipment_id,
+                equipment_name: equipment.equipment_name,
+                last_maintained: equipment.last_maintained,
+                next_maintained: equipment.next_maintained,
+            }));
+            setEquipment(equipments)
+        } catch (error) {
+            console.log('There was an error while fetching equipment');
+        }
+    }
+
     return (
         <div>
             <h1 style={{ marginBottom: '20px' }}>My admin dashboard</h1>
@@ -165,6 +194,26 @@ function AdminDashboard() {
                 <button type={"submit"}>Create</button>
             </form>
             <h2>Equipment Maintenance</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Last Maintenance</th>
+                        <th>Next Maintenance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {equipment.map((item)=> (
+                        <tr key={item.equipment_id}>
+                            <td>{item.equipment_id}</td>
+                            <td>{item.equipment_name}</td>
+                            <td>{item.last_maintained}</td>
+                            <td>{item.next_maintained}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
             <h2>Create invoice</h2>
         </div>
     );
