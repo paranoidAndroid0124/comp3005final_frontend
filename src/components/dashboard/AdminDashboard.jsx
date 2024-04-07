@@ -29,7 +29,7 @@ function AdminDashboard() {
             console.log(data);
             const trainerOptions = data.map(trainer => ({
                 value: trainer.user_id,
-                label: trainer.first_name,
+                label: `${trainer.first_name} ${trainer.last_name}`,
             }));
             setTrainers(trainerOptions);
         } catch (error) {
@@ -67,12 +67,32 @@ function AdminDashboard() {
         console.log(`Selected: ${selectOptions.label}`);
     };
 
+    const handleNewTimeSlot = async (event) => {
+        event.preventDefault();
+        console.log(selectedTrainer.value);
+        try {
+            const response = await fetch('http://localhost:3001/timeslots/add', {
+                method: 'POST',
+                headers: {
+                    'Content-type' : 'application/json'
+                },
+                body: JSON.stringify({trainer: selectedTrainer.value, startTime, endTime, capacity, location})
+            });
+
+            if(!response.ok) {
+                throw new Error(`Http error status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('There was issue add new timeslot')
+        }
+
+    };
+
     return (
         <div>
-            <h1>My admin dashboard</h1>
-            <button onClick={handleButtonClick}>Get all members</button>
-            <h2>Schedule</h2>
-            <form>
+            <h1 style={{ marginBottom: '20px' }}>My admin dashboard</h1>
+            <h2>Add Class to Schedule</h2>
+            <form onSubmit={handleNewTimeSlot}>
                 <div>
                     <h3>trainer</h3>
                 </div>
@@ -115,7 +135,12 @@ function AdminDashboard() {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                 />
+                <br></br>
+                <br></br>
+                <button type={"submit"}>Create</button>
             </form>
+            <h2>Equipment Maintenance</h2>
+            <h2>Create invoice</h2>
         </div>
     );
 }
