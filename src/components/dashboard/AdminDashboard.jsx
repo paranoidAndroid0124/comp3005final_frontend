@@ -17,6 +17,8 @@ function AdminDashboard() {
     const [member, setMembers] = useState([]);
     const [selectedMember, setSelectedMember] = useState(null);
     const [periodicity, setPeriodicity] = useState("");
+    const [cardType, setCardType] = useState("");
+    const [expiry, setExpiry] = useState("");
 
     const fetchTrainers = async () => {
         try {
@@ -176,7 +178,7 @@ function AdminDashboard() {
 
     return (
         <div>
-            <h1 style={{ marginBottom: '20px' }}>My admin dashboard</h1>
+            <h1 style={{marginBottom: '20px'}}>My admin dashboard</h1>
             <h2>Add Class to Schedule</h2>
             <form onSubmit={handleNewTimeSlot}>
                 <div>
@@ -236,22 +238,22 @@ function AdminDashboard() {
             <h2>Equipment Maintenance</h2>
             <table>
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Last Maintenance</th>
-                        <th>Next Maintenance</th>
-                    </tr>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Last Maintenance</th>
+                    <th>Next Maintenance</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {equipment.map((item)=> (
-                        <tr key={item.equipment_id}>
-                            <td>{item.equipment_id}</td>
-                            <td>{item.equipment_name}</td>
-                            <td>{item.last_maintained}</td>
-                            <td>{item.next_maintained}</td>
-                        </tr>
-                    ))}
+                {equipment.map((item) => (
+                    <tr key={item.equipment_id}>
+                        <td>{item.equipment_id}</td>
+                        <td>{item.equipment_name}</td>
+                        <td>{item.last_maintained}</td>
+                        <td>{item.next_maintained}</td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
             <h2>Class Schedule Updating</h2>
@@ -262,8 +264,6 @@ function AdminDashboard() {
                     value={selectedMember}
                     onChange={handleMemberChange}
                     options={member}
-                    //value={location}
-                    //onChange={(e) => setLocation(e.target.value)}
                 />
                 <h3>periodicity</h3>
                 <select
@@ -275,19 +275,17 @@ function AdminDashboard() {
                     <option value="monthly">Monthly</option>
                     <option value="yearly">Yearly</option>
                 </select>
-                <h3>payment info</h3>
-                <input
-                    type="text"
-                    //value={location}
-                    //onChange={(e) => setLocation(e.target.value)}
-                />
                 <h3>card type</h3>
-                <input
-                    type="text"
-                    //value={location}
-                    //onChange={(e) => setLocation(e.target.value)}
-                />
-                <h3>card holder</h3>
+                <select
+                    value={cardType}
+                    onChange={(e) => setCardType(e.target.value)}
+                >
+                    <option value="">Select card type</option>
+                    <option value="mastercard">Mastercard</option>
+                    <option value="visa">Visa</option>
+                    <option value="paypal">Paypal</option>
+                </select>
+                <h3>card holder name</h3>
                 <input
                     type="text"
                     //value={location}
@@ -301,12 +299,18 @@ function AdminDashboard() {
                 />
                 <h3>expiry</h3>
                 <input
-                    type="text"
-                    //value={location}
-                    //onChange={(e) => setLocation(e.target.value)}
+                    type="date"
+                    value={expiry}
+                    onChange={(e) => setExpiry(e.target.value)}
                 />
             </form>
             <h2>Create invoice</h2>
+            <h3>payment info</h3>
+            <input
+                type="text"
+                //value={location}
+                //onChange={(e) => setLocation(e.target.value)}
+            />
         </div>
     );
 }
