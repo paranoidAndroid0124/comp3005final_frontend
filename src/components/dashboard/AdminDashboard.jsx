@@ -14,7 +14,8 @@ function AdminDashboard() {
     // equipment states
     const [equipment, setEquipment] = useState([]);
     // billing information states
-    const [user, setUser] = useState([]);
+    const [member, setMembers] = useState([]);
+    const [selectedMember, setSelectedMember] = useState(null);
     const [periodicity, setPeriodicity] = useState("");
 
     const fetchTrainers = async () => {
@@ -72,10 +73,13 @@ function AdminDashboard() {
  
     const fetchMembers = async ()=> {
         try {
+            // get jwt token from localStorage
+            const token = localStorage.getItem("token");
+
             const response = await fetch('http://localhost:3001/member', {
                 method: 'GET',
                 headers: {
-                    //'Authorization' : token,
+                    'Authorization' : token,
                     'content-type' : 'application/json'
                 }
             });
@@ -84,7 +88,14 @@ function AdminDashboard() {
                 throw new Error('Http error status: ' + response.status);
             }
 
-            const data = 
+            const data = await response.json();
+            const memberOptions = data.map(member =>({
+                value: member.user_id,
+                label: `${member.first_name} ${member.last_name}`,
+            }));
+            setMembers(memberOptions);
+        } catch (error) {
+            console.log('There was an error while fetching members');
         }
     }
 
@@ -92,6 +103,7 @@ function AdminDashboard() {
         // TODO: code to run on component load
         console.log('Component was mounted');
        fetchTrainers();
+       fetchMembers();
        fetchEquipment();
         console.log('trainer name were added');
     }, []);
@@ -118,6 +130,10 @@ function AdminDashboard() {
         setSelectedTrainer(selectOptions);
         console.log(`Selected: ${selectOptions.label}`);
     };
+
+    const handleMemberChange = (selectOptions) => {
+        setSelectedMember(selectOptions);
+    }
 
     const handleNewTimeSlot = async (event) => {
         event.preventDefault();
@@ -242,8 +258,10 @@ function AdminDashboard() {
             <h2>Add billing information</h2>
             <form>
                 <h3>member</h3>
-                <input
-                    type="text"
+                <Select
+                    value={selectedMember}
+                    onChange={handleMemberChange}
+                    options={member}
                     //value={location}
                     //onChange={(e) => setLocation(e.target.value)}
                 />
