@@ -3,16 +3,19 @@ import { Navbar, AdminDashboard, MemberDashboard, TrainerDashboard } from "../..
 
 const DashboardPage = () => {
     // TODO: logic to fetch user role
-    const userRole = 'member';
-
+    const userRoleId = localStorage.getItem("roleId");
+    console.log(userRoleId);
     // Determines which dashboard to render based on the role
     const renderDashboard = () => {
-        switch (userRole) {
-            case 'admin':
+        switch (userRoleId) {
+            case '1':
+                // admin
                 return <AdminDashboard />;
-            case 'member':
+            case '2':
+                // member
                 return <MemberDashboard />;
-            case 'trainer':
+            case '3':
+                // trainer
                 return <TrainerDashboard />;
             default:
                 return <div>No dashboard available for your role</div>;

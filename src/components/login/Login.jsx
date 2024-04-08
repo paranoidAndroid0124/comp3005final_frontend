@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
 
@@ -25,17 +26,17 @@ function Login() {
       }
 
       // Parse response as text
-      // const token = await response.text();
+      const token = await response.text();
+
+      const decodedToken = jwtDecode(token);
       // For dev purposes
-      // console.log(token);
+      console.log(decodedToken);
+      // get roleId
+      const roleId = decodedToken['roleId'];
       // store token
-      // localStorage.setItem("token", token);
-
-      const userId = await response.text();
-
-      console.log(userId)
-
-      localStorage.setItem("userId", userId);
+      localStorage.setItem("token", token);
+      localStorage.setItem("roleId", roleId);
+      // front end login state
       localStorage.setItem("loggedIn", true);
 
       navigate("/")
