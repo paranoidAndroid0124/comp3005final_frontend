@@ -48,6 +48,7 @@ function AdminDashboard() {
             const response = await fetch('http://localhost:3001/equipment', {
                 method: 'GET',
                 headers: {
+                    //'Authorization' : token,
                     'content-type': 'application/json'
                 }
             });
@@ -68,9 +69,23 @@ function AdminDashboard() {
             console.log('There was an error while fetching equipment');
         }
     }
-
+ 
     const fetchMembers = async ()=> {
+        try {
+            const response = await fetch('http://localhost:3001/member', {
+                method: 'GET',
+                headers: {
+                    //'Authorization' : token,
+                    'content-type' : 'application/json'
+                }
+            });
 
+            if (!response.ok) {
+                throw new Error('Http error status: ' + response.status);
+            }
+
+            const data = 
+        }
     }
 
     useEffect(() =>{
