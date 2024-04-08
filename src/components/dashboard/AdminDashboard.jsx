@@ -13,6 +13,9 @@ function AdminDashboard() {
     const [location, setLocation] = useState("");
     // equipment states
     const [equipment, setEquipment] = useState([]);
+    // billing information states
+    const [user, setUser] = useState([]);
+    const [periodicity, setPeriodicity] = useState("");
 
     const fetchTrainers = async () => {
         try {
@@ -38,6 +41,36 @@ function AdminDashboard() {
         } catch (error) {
             console.log('There was an error while fetching trainers');
         }
+    }
+
+    const fetchEquipment = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/equipment', {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Http error status: ' + response.status);
+            }
+
+            const data = await response.json();
+            const equipments = data.map(equipment => ({
+                equipment_id: equipment.equipment_id,
+                equipment_name: equipment.equipment_name,
+                last_maintained: equipment.last_maintained,
+                next_maintained: equipment.next_maintained,
+            }));
+            setEquipment(equipments)
+        } catch (error) {
+            console.log('There was an error while fetching equipment');
+        }
+    }
+
+    const fetchMembers = async ()=> {
+
     }
 
     useEffect(() =>{
@@ -108,31 +141,7 @@ function AdminDashboard() {
 
     };
 
-    const fetchEquipment = async () => {
-        try {
-            const response = await fetch('http://localhost:3001/equipment', {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/json'
-                }
-            });
 
-            if (!response.ok) {
-                throw new Error('Http error status: ' + response.status);
-            }
-
-            const data = await response.json();
-            const equipments = data.map(equipment => ({
-                equipment_id: equipment.equipment_id,
-                equipment_name: equipment.equipment_name,
-                last_maintained: equipment.last_maintained,
-                next_maintained: equipment.next_maintained,
-            }));
-            setEquipment(equipments)
-        } catch (error) {
-            console.log('There was an error while fetching equipment');
-        }
-    }
 
     return (
         <div>
@@ -214,6 +223,56 @@ function AdminDashboard() {
                     ))}
                 </tbody>
             </table>
+            <h2>Class Schedule Updating</h2>
+            <h2>Add billing information</h2>
+            <form>
+                <h3>member</h3>
+                <input
+                    type="text"
+                    //value={location}
+                    //onChange={(e) => setLocation(e.target.value)}
+                />
+                <h3>periodicity</h3>
+                <select
+                    value={periodicity}
+                    onChange={(e) => setPeriodicity(e.target.value)}
+                >
+                    <option value="">Select a Periodicity</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="yearly">Yearly</option>
+                </select>
+                <h3>payment info</h3>
+                <input
+                    type="text"
+                    //value={location}
+                    //onChange={(e) => setLocation(e.target.value)}
+                />
+                <h3>card type</h3>
+                <input
+                    type="text"
+                    //value={location}
+                    //onChange={(e) => setLocation(e.target.value)}
+                />
+                <h3>card holder</h3>
+                <input
+                    type="text"
+                    //value={location}
+                    //onChange={(e) => setLocation(e.target.value)}
+                />
+                <h3>card number</h3>
+                <input
+                    type="text"
+                    //value={location}
+                    //onChange={(e) => setLocation(e.target.value)}
+                />
+                <h3>expiry</h3>
+                <input
+                    type="text"
+                    //value={location}
+                    //onChange={(e) => setLocation(e.target.value)}
+                />
+            </form>
             <h2>Create invoice</h2>
         </div>
     );
