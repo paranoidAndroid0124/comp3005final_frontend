@@ -4,7 +4,7 @@ import { Navbar, AdminDashboard, MemberDashboard, TrainerDashboard } from "../..
 const DashboardPage = () => {
     // TODO: logic to fetch user role
     const userRoleId = localStorage.getItem("roleId");
-    console.log(userRoleId);
+    console.log("userRoleId: ", userRoleId);
     // Determines which dashboard to render based on the role
     const renderDashboard = () => {
         switch (userRoleId) {

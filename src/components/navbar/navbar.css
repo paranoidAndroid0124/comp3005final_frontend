@@ -2,7 +2,8 @@
     display: flex;
     justify-content: space-between;
     background-color: #FF9B9B;
-    padding: 10px 16px;
+    padding: 1%;
+    /* padding: 10px 16px; */
     margin-bottom: 10px;
 }
 
