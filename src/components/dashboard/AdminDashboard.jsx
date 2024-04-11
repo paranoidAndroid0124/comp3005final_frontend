@@ -1,6 +1,7 @@
 import React from "react";
 import Select from 'react-select';
 import { useState, useEffect } from "react";
+import "./dashboard.css";
 
 function AdminDashboard() {
     // timeslot states
@@ -139,10 +140,10 @@ function AdminDashboard() {
 
     const handleNewTimeSlot = async (event) => {
         event.preventDefault();
-        console.log(selectedTrainer.value);
+        // console.log(selectedTrainer.value);
         try {
-            if (!date || !startTime || !endTime) {
-                console.error('Date, start time, and end time are required');
+            if (!date || !startTime || !endTime || !selectedTrainer) {
+                console.error('Date, start time, end time, and trainer are required');
                 return;
             }
             // combine date and time
@@ -174,7 +175,27 @@ function AdminDashboard() {
 
     };
 
+    const startTimeInput = document.getElementById("startTimeInput");
+    const previousStartValue = startTime;
+    if (startTimeInput != null){
+        startTimeInput.onchange = () => {
+            if (startTime < startTimeInput.min) {
+              console.log("Invalid Time!")
+                setStartTime(previousStartValue);
+            }
+          }  
+    }
 
+    const endTimeInput = document.getElementById("endTimeInput");
+    const previousEndValue = endTime;
+    if (endTimeInput != null){
+        endTimeInput.onchange = () => {
+            if (startTime < startTimeInput.min || endTime > endTimeInput.max) {
+              console.log("Invalid Time!")
+                setEndTime(previousEndValue);
+            }
+          }  
+    }
 
     return (
         <div>
@@ -202,16 +223,24 @@ function AdminDashboard() {
                 </div>
                 <input
                     type="time"
+                    id="startTimeInput"
                     value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                />
+                    onChange={(e) => setStartTime(e.target.value)} 
+                    // TODO: change this to selectedTrainers availability
+                    min="08:00" 
+                required/>
                 <div>
                     <h3>end time</h3>
                 </div>
                 <input
                     type="time"
+                    id="endTimeInput"
                     value={endTime}
                     onChange={(e) => setEndTime(e.target.value)}
+                    min={startTime}
+
+                    // TODO: change this to selectedTrainers availability
+                    max="22:00" 
                 />
                 <div>
                     <h3>capacity</h3>

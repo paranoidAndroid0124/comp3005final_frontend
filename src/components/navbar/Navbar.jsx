@@ -3,7 +3,7 @@ import "./navbar.css"
 
 const Navbar = () => {
     function Item({ name, path,loggedIn}) {
-        if (loggedIn == "true") {
+        if (loggedIn === "true") {
             return <li><a href={path}>{name}</a></li>;
         }
         return;
@@ -11,15 +11,15 @@ const Navbar = () => {
 
     // Delete function and <li> below  because we dont use cookies, and is not really good practice 
     function LogOut({ name, path, loggedIn}) {
-        if (loggedIn == "true") {
+        if (loggedIn === "true") {
             return <li><a href={path} onClick={()=>localStorage.setItem("loggedIn", false)}>{name}</a></li>;
         }
 
         return;
     }
-
+    
     const loggedIn = localStorage.getItem("loggedIn")
-    const logInButton = "true" == loggedIn ? "false" : "true"
+    const logInButton = "true" === loggedIn ? "false" : "true"
 
     return (
         <div className='navbar'>
