@@ -257,9 +257,28 @@ function AdminDashboard() {
           }  
     }
 
-    function handleUpdate(equipment) {
+    const handleUpdate = async(equipment) => {
         // TODO: simple post request to update equipment maintanence to current time
-        console.log(equipment)
+        try {
+            const response = await fetch('http://localhost:3001/equipment/updateMaintenance', {
+                method: 'POST',
+                headers: {
+                    'Content-type' : 'application/json'
+                },
+                body: JSON.stringify(
+                    {
+                        equipment_id: equipment.item.equipment_id,
+                    }
+                )
+            });
+
+            if (!response.ok) {
+                throw new Error(`Http error status: ${response.status}`);
+            }
+        } catch(err){
+            alert("Updating equipment failed.")
+            console.log(err)
+        }
     }
 
     return (
@@ -356,7 +375,7 @@ function AdminDashboard() {
                         <td>{item.equipment_name}</td>
                         <td>{item.last_maintained}</td>
                         <td>{item.next_maintained}</td>
-                        <td><button onClick={()=> handleUpdate({item})}>Updated maintenance</button></td>
+                        <td><button onClick={()=> handleUpdate({item})}>Update Last Maintained</button></td>
                     </tr>
                 ))}
                 </tbody>
