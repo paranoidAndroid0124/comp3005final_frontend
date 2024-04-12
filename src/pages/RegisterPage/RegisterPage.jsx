@@ -37,37 +37,78 @@ function RegisterPage() {
       navigate("/")
     } catch (error) {
       console.error('There is a problem with the registration request:', error);
-      // TODO: handle error (err msg to user)
+      alert("Registration failed.")
     }
   }
 
   return (
     <div>
       <Navbar></Navbar>
-      <br></br>
-      <form onSubmit={handleSubmit}>
-        <div> Enter Email: </div>
-        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
-        <br></br>
-        <div>Enter Password: </div>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}></input>
-        <br></br>
-        <div>Enter First Name:</div>
-        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}></input>
-        <br></br>
-        <div>Enter Last Name:</div>
-        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}></input>
-        <br></br>
-        <div>Enter Phone Number:</div>
-        <input type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}></input>
-        <br></br>
-        <div>Enter Address:</div>
-        <input type="text" value={address} onChange={(e) => setAddress(e.target.value)}></input>
-        <br></br>
+        <div className={'mainContainer'}>
+          <div className={'titleContainer'}>
+          
+          <div className={'subheadingContainer'}>
+            <div>Register Below...</div>
+          </div>
+          <div className={'inputContainer'}>
+            <input
+              value={email}
+              placeholder="Enter Username here"
+              onChange={(ev) => setEmail(ev.target.value)}
+              className={'inputBox'}
+            />
+            </div>
 
-        <input type="submit"></input>
-      </form>
+            <div className={'inputContainer'}>
+            <input
+              value={password}
+              placeholder="Enter Password here"
+              onChange={(ev) => setPassword(ev.target.value)}
+              className={'inputBox'}
+            />
+            </div>
 
+            <div className={'inputContainer'}>
+            <input
+              value={firstName}
+              placeholder="Enter First Name here"
+              onChange={(ev) => setFirstName(ev.target.value)}
+              className={'inputBox'}
+            />
+            </div>
+
+            <div className={'inputContainer'}>
+            <input
+              value={lastName}
+              placeholder="Enter Last Name here"
+              onChange={(ev) => setLastName(ev.target.value)}
+              className={'inputBox'}
+            />
+            </div>
+
+            <div className={'inputContainer'}>
+            <input
+              value={phoneNumber}
+              placeholder="Enter Phone Number here"
+              onChange={(ev) => setPhoneNumber(ev.target.value)}
+              className={'inputBox'}
+            />
+            </div>
+
+            <div className={'inputContainer'}>
+            <input
+              value={address}
+              placeholder="Enter Address here"
+              onChange={(ev) => setAddress(ev.target.value)}
+              className={'inputBox'}
+            />
+            </div>
+          </div>
+          <br />
+          <div className={'inputContainer'}>
+            <input className={'inputButton'} type="button" id="register_button" value={'Register'} onClick={handleSubmit}/>
+          </div>
+        </div>
     </div>
   )
 }

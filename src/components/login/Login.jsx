@@ -2,7 +2,6 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
-import {Register} from "../../components"
 
 import "./login.css"
 
@@ -25,7 +24,6 @@ function Login() {
       });
 
       if(!response.ok) {
-        alert("Credentials not found")
         throw new Error(`Http error status: ${response.status}`);
       }
 
