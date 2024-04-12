@@ -1,4 +1,18 @@
 .modal {
     margin: 5%;
     background-color: beige;
+    width: 40vw;
+    margin-left: 25%;
+    margin-top: 15%;
+}
+
+.ReactModal__Overlay {
+    z-index: 1000;
+}
+
+.buttons {
+    display:flex; 
+    justify-content: center;
+    gap: 5%;
+    padding: 15px;
 }
