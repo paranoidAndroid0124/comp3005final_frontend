@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Calendar } from "../../components";
+import { Calendar, Routines } from "../../components";
 
 
 import "./dashboard.css";
@@ -19,7 +19,7 @@ const memberDashboard = () => {
 
             <div className="routine">
                 <h1>Routines</h1>
-                Routines displayed here
+                <Routines></Routines>
             </div>
 
             <div className="stats">
