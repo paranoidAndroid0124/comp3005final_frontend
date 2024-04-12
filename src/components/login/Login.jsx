@@ -22,6 +22,7 @@ function Login() {
       });
 
       if(!response.ok) {
+        alert("Credentials not found")
         throw new Error(`Http error status: ${response.status}`);
       }
 
