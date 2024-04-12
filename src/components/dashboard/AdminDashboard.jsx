@@ -2,6 +2,7 @@ import React from "react";
 import Select from 'react-select';
 import { useState, useEffect } from "react";
 import "./dashboard.css";
+import { Calendar } from "../";
 
 function AdminDashboard() {
     // timeslot states
@@ -256,6 +257,11 @@ function AdminDashboard() {
           }  
     }
 
+    function handleUpdate(equipment) {
+        // TODO: simple post request to update equipment maintanence to current time
+        console.log(equipment)
+    }
+
     return (
         <div>
             <h1 style={{marginBottom: '20px'}}>My admin dashboard</h1>
@@ -350,11 +356,13 @@ function AdminDashboard() {
                         <td>{item.equipment_name}</td>
                         <td>{item.last_maintained}</td>
                         <td>{item.next_maintained}</td>
+                        <td><button onClick={()=> handleUpdate({item})}>Updated maintenance</button></td>
                     </tr>
                 ))}
                 </tbody>
             </table>
             <h2>Class Schedule Updating</h2>
+            <Calendar></Calendar>
             <h2>Add billing information</h2>
             <form onSubmit={handleBillingInfo}>
                 <h3>member</h3>
