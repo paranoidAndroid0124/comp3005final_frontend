@@ -2,6 +2,9 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
+import {Register} from "../../components"
+
+import "./login.css"
 
 function Login() {
 
@@ -44,35 +47,48 @@ function Login() {
 
     } catch (error) {
       console.error('There was a problem with the login request:', error);
-      // TODO: handle error (err msg to user)
+      alert("Login Failed")
     }
   }
 
+  const handleRegisterClick = () =>{ 
+    let path = `../register`; 
+    navigate(path);
+  }
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>Email: </div>
-        <input
-            name="email"
-            type="text"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-        />
-
-        <div>Password: </div>
-        <input
-            name="password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-        />
-        <br></br>
-        <br></br>
-        <button type={"submit"}>Login</button>
-      </form>
-
-
+    <div className={'mainContainer'}>
+    <div className={'titleContainer'}>
     </div>
+    <div className={'subheadingContainer'}>
+      <div>Login Below...</div>
+    </div>
+    <br />
+    <div className={'inputContainer'}>
+      <input
+        value={email}
+        placeholder="Enter Username here"
+        onChange={(ev) => setEmail(ev.target.value)}
+        className={'inputBox'}
+      />
+      <br></br>
+    </div>
+    <br />
+    <div className={'inputContainer'}>
+      <input
+        value={password}
+        placeholder="Enter password here"
+        onChange={(ev) => setPassword(ev.target.value)}
+        className={'inputBox'}
+      />
+      <br></br>
+    </div>
+    <br />
+    <div className={'inputContainer'}>
+      <input className={'inputButton'} type="button" id="login_button" value={'Login'} onClick={handleSubmit}/>
+      <input className={'inputButton'} type="button" id="register_button" value={'Register'} onClick={handleRegisterClick}/>
+    </div>
+  </div>
   )
 }
 

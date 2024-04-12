@@ -12,6 +12,7 @@ function Register() {
 
   return (
     <div>
+      yellow
       <input type="button" value="Register Now" onClick={routeChange}></input>
     </div>
   )
