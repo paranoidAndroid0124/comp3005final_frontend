@@ -5,6 +5,7 @@ import "./dashboard.css";
 
 function AdminDashboard() {
     // timeslot states
+    const [title, setTitle] = React.useState("");
     const [trainers, setTrainers] = useState([]);  // dynamically fetched
     const [selectedTrainer, setSelectedTrainer] = useState(null);
     const [date, setDate] = useState("");
@@ -12,6 +13,7 @@ function AdminDashboard() {
     const [endTime, setEndTime] = useState("");
     const [capacity, setCapacity] = useState(1);
     const [location, setLocation] = useState("");
+    const [price, setPrice] = useState("");
     // equipment states
     const [equipment, setEquipment] = useState([]);
     // billing information states
@@ -19,7 +21,12 @@ function AdminDashboard() {
     const [selectedMember, setSelectedMember] = useState(null);
     const [periodicity, setPeriodicity] = useState("");
     const [cardType, setCardType] = useState("");
+    const [cardHolder, setCardHolder] = useState("");
+    const [cardNumber, setCardNumber] = useState("");
     const [expiry, setExpiry] = useState("");
+    // payment states
+    const [amount, setAmount] = useState("");
+    const [paymentSlot, setPaymentSlot] = useState("");
 
     const fetchTrainers = async () => {
         try {
@@ -158,11 +165,13 @@ function AdminDashboard() {
                     'Content-type' : 'application/json'
                 },
                 body: JSON.stringify({
+                    title: title,
                     trainer: selectedTrainer.value,
                     startTime: startDateTime,
                     endTime: endDateTime,
-                    capacity,
-                    location
+                    capacity: capacity,
+                    location: location,
+                    price: price,
                 })
             });
 
@@ -170,10 +179,60 @@ function AdminDashboard() {
                 throw new Error(`Http error status: ${response.status}`);
             }
         } catch (error) {
-            console.error('There was issue add new timeslot')
+            console.error('There was an issue add new timeslot');
         }
-
     };
+
+    const handleBillingInfo = async (event) => {
+      event.preventDefault();
+      try {
+        const response = await fetch('http://localhost:3001/member/billing/add', {
+            method: 'POST',
+            headers: {
+                'Content-type' : 'application/json'
+            },
+            body: JSON.stringify({
+                userId: selectedMember.value,
+                periodicity: periodicity,
+                cardType: cardType,
+                cardHolder: cardHolder,
+                cardNumber: cardNumber,
+                expiry: expiry,
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Http error status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('There was an issue adding billing');
+      }
+    };
+
+    const handlePayment = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch('http://localhost:3001/member/payment/add', {
+                method: 'POST',
+                headers: {
+                    'Content-type' : 'application/json'
+                },
+                body: JSON.stringify(
+                    {
+                        user_id: selectedMember.value,
+                        amount: amount,
+                        slots_id: paymentSlot,
+                    }
+                )
+            });
+
+            if (!response.ok) {
+                throw new Error(`Http error status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('There was an issue adding payment');
+        }
+    }
 
     const startTimeInput = document.getElementById("startTimeInput");
     const previousStartValue = startTime;
@@ -203,63 +262,73 @@ function AdminDashboard() {
             <h2>Add Class to Schedule</h2>
             <form onSubmit={handleNewTimeSlot}>
                 <div>
-                    <h3>trainer</h3>
-                </div>
-                <Select
-                    value={selectedTrainer}
-                    onChange={handleTrainerChange}
-                    options={trainers}
-                />
-                <div>
-                    <h3>date</h3>
-                </div>
-                <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                />
-                <div>
-                    <h3>start time</h3>
-                </div>
-                <input
-                    type="time"
-                    id="startTimeInput"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)} 
-                    // TODO: change this to selectedTrainers availability
-                    min="08:00" 
-                required/>
-                <div>
-                    <h3>end time</h3>
-                </div>
-                <input
-                    type="time"
-                    id="endTimeInput"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    min={startTime}
+                    <h3>Title</h3>
+                    <input
+                        type="text"
+                        value={title}
+                        onChange={(e => setTitle(e.target.value))}
+                    />
 
-                    // TODO: change this to selectedTrainers availability
-                    max="22:00" 
-                />
-                <div>
+                    <h3>trainer</h3>
+                    <Select
+                        value={selectedTrainer}
+                        onChange={handleTrainerChange}
+                        options={trainers}
+                    />
+
+                    <h3>date</h3>
+                    <input
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                    />
+
+                    <h3>start time</h3>
+                    <input
+                        type="time"
+                        id="startTimeInput"
+                        value={startTime}
+                        onChange={(e) => setStartTime(e.target.value)}
+                        // TODO: change this to selectedTrainers availability
+                        min="08:00"
+                        required/>
+
+                    <h3>end time</h3>
+                    <input
+                        type="time"
+                        id="endTimeInput"
+                        value={endTime}
+                        onChange={(e) => setEndTime(e.target.value)}
+                        min={startTime}
+
+                        // TODO: change this to selectedTrainers availability
+                        max="22:00"
+                    />
+
                     <h3>capacity</h3>
-                </div>
-                <input
-                    type="number"
-                    min="1" // Ensure the capacity is at least one
-                    step="1" // int values only
-                    value={capacity}
-                    onChange={(e) => setCapacity(e.target.value)}
-                />
-                <div>
+                    <input
+                        type="number"
+                        min="1" // Ensure the capacity is at least one
+                        step="1" // int values only
+                        value={capacity}
+                        onChange={(e) => setCapacity(e.target.value)}
+                    />
+
                     <h3>location</h3>
+                    <input
+                        type="text"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                    />
+
+                    <h3>price</h3>
+                    <input
+                        type="number"
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                    />
                 </div>
-                <input
-                    type="text"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                />
+
                 <br></br>
                 <br></br>
                 <button type={"submit"}>Create</button>
@@ -287,7 +356,7 @@ function AdminDashboard() {
             </table>
             <h2>Class Schedule Updating</h2>
             <h2>Add billing information</h2>
-            <form>
+            <form onSubmit={handleBillingInfo}>
                 <h3>member</h3>
                 <Select
                     value={selectedMember}
@@ -317,14 +386,14 @@ function AdminDashboard() {
                 <h3>card holder name</h3>
                 <input
                     type="text"
-                    //value={location}
-                    //onChange={(e) => setLocation(e.target.value)}
+                    value={cardHolder}
+                    onChange={(e) => setCardHolder(e.target.value)}
                 />
                 <h3>card number</h3>
                 <input
                     type="text"
-                    //value={location}
-                    //onChange={(e) => setLocation(e.target.value)}
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value)}
                 />
                 <h3>expiry</h3>
                 <input
@@ -332,14 +401,38 @@ function AdminDashboard() {
                     value={expiry}
                     onChange={(e) => setExpiry(e.target.value)}
                 />
+                <br></br>
+                <br></br>
+                <button type={"submit"}>Add billing information</button>
             </form>
-            <h2>Create invoice</h2>
-            <h3>payment info</h3>
-            <input
-                type="text"
-                //value={location}
-                //onChange={(e) => setLocation(e.target.value)}
-            />
+            <h2>Add Payment</h2>
+            <form onSubmit={handlePayment}>
+                <h3>Member</h3>
+                <Select
+                    value={selectedMember}
+                    onChange={handleMemberChange}
+                    options={member}
+                />
+                <h3>Amount</h3>
+                <input
+                    type="number"
+                    min="1" // Ensure the capacity is at least one
+                    step="0.01" // int values only
+                    value={amount}
+                    onChange={(e => setAmount(e.target.value))}
+                />
+                <h3>Time slot</h3>
+                <input
+                    type="number"
+                    min="1" // Ensure the capacity is at least one
+                    step="1" // int values only
+                    value={paymentSlot}
+                    onChange={(e) => setPaymentSlot(e.target.value)}
+                />
+                <br></br>
+                <br></br>
+                <button type={"submit"}>complete payment</button>
+            </form>
         </div>
     );
 }
