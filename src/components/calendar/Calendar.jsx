@@ -176,7 +176,7 @@ function Calendar() {
   // TODO: make POST request to backend
   const handleRegister = async (slotId) => {
     try {
-      await console.log("slotID, userId : ", slotId, userId)
+      console.log("slotID, userId : ", slotId, userId);
       const response = await fetch("http://localhost:3001/timeslot/register", {
         method: "POST",
         headers: {
@@ -186,7 +186,7 @@ function Calendar() {
           user_id: userId,
           slot_id: slotId
         })
-      })
+      });
 
       if (!response.ok) {
         throw new Error(`Http error status: ${response.status} `);
@@ -197,7 +197,6 @@ function Calendar() {
       console.log(err);
       alert("Registration failed.")
     }
-
   }
 
   // TODO: make POST request to backend
@@ -220,7 +219,7 @@ function Calendar() {
         console.log("roleId, slotId in handleUserButton: ", roleId, slotId)
         return (
           <div className='buttons'>
-            <button onClick={handleRegister(slotId)}>Register Now! </button>
+            <button onClick={() => handleRegister(slotId)}>Register Now! </button>
             <button onClick={() => setModalIsOpen(false)} className='close'>Close</button>
           </div>
         )
