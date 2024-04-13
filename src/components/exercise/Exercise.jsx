@@ -1,43 +1,34 @@
-import React from 'react'
-
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities"
+import React, { useState } from 'react'
 
 import "./exercise.css"
 
-const Exercise = ({ id }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+const Exercise = ({ roleId, exercise, selected }) => {
+  const [checked, setChecked] = useState(selected)
 
-  const style = {
-    transition,
-    transform: CSS.Transform.toString(transform),
-  };
+  function handleCheckBox () {
+    
+    console.log("Checkboxed!")
+  }
+
+  function handleTrainerInput () {
+    if (roleId == 2) {
+      return;
+    } else {
+      return <input type="checkbox" className='checkbox' onClick={handleCheckBox()}></input>;
+    }
+  }
 
   return (
-    <div
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      style={style}
-      className="row"
-    >
-
-      test {id}
-      {/* <h3>{exercise.exercise_name}</h3>
+    <div className="row">
+      <h3>{exercise.exercise_name}</h3>
       Reps: {exercise.reps}
       <br></br>
-      Suggested Duration: {exercise.duration} */}
+      Suggested Duration: {exercise.duration}
+      <br></br>
+      <div className='trainer-input'>
+        {handleTrainerInput()}
+      </div>
     </div>
-
-    // below is code for members, in case above breaks it
-    // <div className="row">
-    // <div key={exercise.exercise_id}>
-    //     <h3>{exercise.exercise_name}</h3>
-    //     Reps: {exercise.reps}
-    //     <br></br>
-    //     Suggested Duration: {exercise.duration}
-    //     </div>
-    // </div>
   )
 }
 

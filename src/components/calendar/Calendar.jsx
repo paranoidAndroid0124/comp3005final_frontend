@@ -200,8 +200,24 @@ function Calendar() {
   }
 
   // TODO: make POST request to backend
-  function handleDeleteClass() {
-    console.log("Deleted class")
+  const handleDeleteClass = async (slotId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/timeslots/${slotId}/remove`, {
+        method: "POST",
+        headers: {
+          'Content-type': 'application/json'
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`Http error status: ${response.status} `);
+      }
+
+      console.log("Deleted class")
+    } catch (err) {
+      alert("Failed to delete class")
+      console.log(err)
+    }
   }
 
   function handleUserButtons(roleId, slotId) {
@@ -256,8 +272,6 @@ function Calendar() {
               {handleUserButtons(userRoleId, modalData._def.extendedProps.slotId)}
             </div>
           )}
-
-
         </Modal>
       </div>
 

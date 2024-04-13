@@ -1,17 +1,9 @@
 import React, { useState } from 'react'
-import { DndContext, closestCenter } from "@dnd-kit/core"
 
 import "./routines.css"
 import { Column, TrainerColumn } from '..'
 
 function Routines() {
-    const userRoleId = localStorage.getItem("roleId");
-
-    if (userRoleId == 2) {
-        // TODO: if user is member, then fetch only the routine set to that user (We can just make it so that each user has only one routine).
-    } else if (userRoleId == 1 || userRoleId == 3) {
-        // TODO: if user is trainer, then fetch ALL exercises, select memberID and customize their routine
-    }
 
     // generated from chatgpt
     const exercises = [
@@ -37,29 +29,9 @@ function Routines() {
         { "exercise_id": 20, "exercise_name": "Arm Circles", "reps": 15, "duration": "30s" }
     ];
 
-    const renderColumns = () => {
-        switch (userRoleId) {
-            case '1':
-                // admin
-                return <TrainerColumn exercises={exercises} />;
-            case '2':
-                // member
-                return <Column exercises={exercises} />;
-            case '3':
-                // trainer
-                console.log("trainer column")
-                return <TrainerColumn exercises={exercises} />;
-            default:
-                return <div>No routines available for your role</div>;
-        }
-    }
-
-
     return (
         <div className='routineBody'>
-            <DndContext collisionDetection={closestCenter}>
-                {renderColumns()}
-            </DndContext>
+             <Column exercises={exercises} />
         </div>
     )
 }

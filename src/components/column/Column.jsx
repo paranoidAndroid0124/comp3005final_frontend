@@ -1,12 +1,13 @@
 import "./column.css"
 import Exercise from "../exercise/Exercise";
 
-// Non draggable, for members
 const Column = ({exercises}) => {
+  const roleId = localStorage.getItem("roleId")
+
   return (
     <div className='column'>
         {exercises.map( (exercise) => 
-            <Exercise exercise={exercise}/>
+            <Exercise exercise={exercise} roleId={roleId} selected/>
         )}
     </div>
   )
