@@ -18,7 +18,7 @@ const memberDashboard = () => {
             </div>
 
             <div className="routine">
-                <h1>Routines</h1>
+                <h1>Routine</h1>
                 <Routines></Routines>
             </div>
 

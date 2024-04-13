@@ -76,7 +76,8 @@ function AdminDashboard() {
                 last_maintained: equipment.last_maintained,
                 next_maintained: equipment.next_maintained,
             }));
-            setEquipment(equipments)
+            const sortedEquipments = equipments.sort((a, b) => a.equipment_id - b.equipment_id);
+            setEquipment(sortedEquipments)
         } catch (error) {
             console.log('There was an error while fetching equipment');
         }
@@ -155,8 +156,8 @@ function AdminDashboard() {
                 return;
             }
             // combine date and time
-            const startDateTime = `${date} ${startTime}:00`;
-            const endDateTime = `${date} ${endTime}:00`;
+            const startDateTime = `${date}T${startTime}:00`;
+            const endDateTime = `${date}T${endTime}:00`;
 
             console.log('StartTime', startDateTime);
 
@@ -178,6 +179,9 @@ function AdminDashboard() {
 
             if(!response.ok) {
                 throw new Error(`Http error status: ${response.status}`);
+            } else {
+                alert(`"${title}" successfully created`)
+
             }
         } catch (error) {
             console.error('There was an issue add new timeslot');
@@ -267,7 +271,7 @@ function AdminDashboard() {
                 },
                 body: JSON.stringify(
                     {
-                        equipment_id: equipment.item.equipment_id,
+                        equipmentID: equipment.item.equipment_id,
                     }
                 )
             });
