@@ -143,8 +143,6 @@ function Calendar() {
         }
       ]
 
-
-      // fetching doesnt store hour and minute data?
       const timeSlotOptions = data.map(timeSlot => ({
         slotId: timeSlot.slot_id,
         start: timeSlot.start_time,
@@ -189,8 +187,6 @@ function Calendar() {
           slot_id: slotId
         })
       })
-
-
 
       if (!response.ok) {
         throw new Error(`Http error status: ${response.status} `);
@@ -250,15 +246,15 @@ function Calendar() {
         <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} className="modal">
           {modalData && (
             <div className='popup'>
-              {console.log("ModalData: ", modalData)}
+              {console.log("ModalData: ", modalData._def.extendedProps)}
               <h1>Register for {modalData.title} at {modalData.start.toISOString().slice(11, 16)} - {modalData.end.toISOString().slice(11, 16)}</h1>
               {/* TODO: change below json as needed */}
-              <p>Trainer: {modalData.trainerName}</p>
-              <p>Location: {modalData.location}</p>
-              <p>Capacity: {modalData.capacity}</p>
-              <p>Currently Registered: {modalData.currentCount}</p>
-              <p>Price for Enrollment: {modalData.price}</p>
-              {handleUserButtons(userRoleId, modalData.slotId)}
+              <p>Trainer: {modalData._def.extendedProps.trainerName}</p>
+              <p>Location: {modalData._def.extendedProps.location}</p>
+              <p>Capacity: {modalData._def.extendedProps.capacity}</p>
+              <p>Currently Registered: {modalData._def.extendedProps.currentCount}</p>
+              <p>Price for Enrollment: {modalData._def.extendedProps.price}</p>
+              {handleUserButtons(userRoleId, modalData._def.extendedProps.slotId)}
             </div>
           )}
 

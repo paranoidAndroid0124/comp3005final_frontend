@@ -35,9 +35,12 @@ function Login() {
       console.log(decodedToken);
       // get roleId
       const roleId = decodedToken['roleId'];
+      const userId = decodedToken['userId'];
+      
       // store token
       localStorage.setItem("token", token);
       localStorage.setItem("roleId", roleId);
+      localStorage.setItem("userId", userId);
       // front end login state
       localStorage.setItem("loggedIn", true);
 
