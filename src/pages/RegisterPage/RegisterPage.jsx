@@ -20,12 +20,12 @@ function RegisterPage() {
       const response = await fetch('http://localhost:3001/register', {
         method: 'POST',
         headers: {
-          'Content-type' : 'application/json'
+          'Content-type': 'application/json'
         },
-        body: JSON.stringify({email, password, firstName, lastName, phoneNumber, address})
+        body: JSON.stringify({ email, password, firstName, lastName, phoneNumber, address })
       })
 
-      if(!response.ok) {
+      if (!response.ok) {
         throw new Error(`Http error status: ${response.status}`)
       }
 
@@ -44,9 +44,9 @@ function RegisterPage() {
   return (
     <div>
       <Navbar></Navbar>
-        <div className={'mainContainer'}>
-          <div className={'titleContainer'}>
-          
+      <div className={'mainContainer'}>
+        <div className={'titleContainer'}>
+
           <div className={'subheadingContainer'}>
             <div>Register Below...</div>
           </div>
@@ -57,58 +57,58 @@ function RegisterPage() {
               onChange={(ev) => setEmail(ev.target.value)}
               className={'inputBox'}
             />
-            </div>
+          </div>
 
-            <div className={'inputContainer'}>
+          <div className={'inputContainer'}>
             <input
               value={password}
               placeholder="Enter Password here"
               onChange={(ev) => setPassword(ev.target.value)}
               className={'inputBox'}
             />
-            </div>
+          </div>
 
-            <div className={'inputContainer'}>
+          <div className={'inputContainer'}>
             <input
               value={firstName}
               placeholder="Enter First Name here"
               onChange={(ev) => setFirstName(ev.target.value)}
               className={'inputBox'}
             />
-            </div>
+          </div>
 
-            <div className={'inputContainer'}>
+          <div className={'inputContainer'}>
             <input
               value={lastName}
               placeholder="Enter Last Name here"
               onChange={(ev) => setLastName(ev.target.value)}
               className={'inputBox'}
             />
-            </div>
+          </div>
 
-            <div className={'inputContainer'}>
+          <div className={'inputContainer'}>
             <input
               value={phoneNumber}
               placeholder="Enter Phone Number here"
               onChange={(ev) => setPhoneNumber(ev.target.value)}
               className={'inputBox'}
             />
-            </div>
+          </div>
 
-            <div className={'inputContainer'}>
+          <div className={'inputContainer'}>
             <input
               value={address}
               placeholder="Enter Address here"
               onChange={(ev) => setAddress(ev.target.value)}
               className={'inputBox'}
             />
-            </div>
-          </div>
-          <br />
-          <div className={'inputContainer'}>
-            <input className={'inputButton'} type="button" id="register_button" value={'Register'} onClick={handleSubmit}/>
           </div>
         </div>
+        <br />
+        <div className={'inputContainer'}>
+          <input className={'inputButton'} type="button" id="register_button" value={'Register'} onClick={handleSubmit} />
+        </div>
+      </div>
     </div>
   )
 }
