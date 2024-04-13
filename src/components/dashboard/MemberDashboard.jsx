@@ -10,7 +10,7 @@ const memberDashboard = () => {
     return (
         <div>
             <div className="classes">
-                <h1>Classes</h1>
+                <h1>Member Classes</h1>
 
                 <div className="scheduling">
                   <Calendar></Calendar>
@@ -18,7 +18,7 @@ const memberDashboard = () => {
             </div>
 
             <div className="routine">
-                <h1>Routine</h1>
+                <h1>Current Routine</h1>
                 <Routines></Routines>
             </div>
 
