@@ -156,8 +156,8 @@ function AdminDashboard() {
                 return;
             }
             // combine date and time
-            const startDateTime = `${date}T${startTime}:00`;
-            const endDateTime = `${date}T${endTime}:00`;
+            const startDateTime = `${date} ${startTime}:00`;
+            const endDateTime = `${date} ${endTime}:00`;
 
             console.log('StartTime', startDateTime);
 
