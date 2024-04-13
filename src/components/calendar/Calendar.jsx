@@ -17,6 +17,7 @@ function Calendar() {
     location: "",
     capacity: "",
     currentCount: "",
+    price: "",
   }]);
   let timeSlotOptions;
 
@@ -47,6 +48,7 @@ function Calendar() {
         location: timeSlot.room, 
         capacity: timeSlot.capacity,
         currentCount: timeSlot.current_enrollment,
+        price: timeSlot.price,
       }));
   
       console.log("timeSlotOptions: ", timeSlotOptions)
@@ -126,6 +128,7 @@ function Calendar() {
               <p>Location: {modalData.location}</p>
               <p>Capacity: {modalData.capacity}</p>
               <p>Currently Registered: {modalData.currentCount}</p>
+              <p>Price for Enrollment: {modalData.price}</p>
             </div>
           )}
           

@@ -184,6 +184,7 @@ function AdminDashboard() {
 
             }
         } catch (error) {
+            alert(`There was an issue registering the timeslot: "${title}"`)
             console.error('There was an issue add new timeslot');
         }
     };

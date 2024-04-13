@@ -1,12 +1,12 @@
 import React from 'react'
 
 import { useSortable } from "@dnd-kit/sortable";
-import {CSS} from "@dnd-kit/utilities"
+import { CSS } from "@dnd-kit/utilities"
 
 import "./exercise.css"
 
-const Exercise = ({id, exercise}) => {
-  const {attributes, listeners, setNodeRef, transform, transition} = useSortable({id: id});
+const Exercise = ({ id }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
 
   const style = {
     transition,
@@ -14,11 +14,19 @@ const Exercise = ({id, exercise}) => {
   };
 
   return (
-    <div ref={setNodeRef} {...attributes} {...listeners} style={style} className="row">
-      <h3>{exercise.exercise_name}</h3>
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
+      className="row"
+    >
+
+      test {id}
+      {/* <h3>{exercise.exercise_name}</h3>
       Reps: {exercise.reps}
       <br></br>
-      Suggested Duration: {exercise.duration}
+      Suggested Duration: {exercise.duration} */}
     </div>
 
     // below is code for members, in case above breaks it

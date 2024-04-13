@@ -4,5 +4,8 @@
     border-style: solid;
     border-radius: 5px;
     background-color: white;
+    align-items: center;
+    justify-content: flex-start;
+    touch-action: none;
     z-index: 99999;
 }

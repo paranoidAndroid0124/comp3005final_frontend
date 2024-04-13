@@ -15,7 +15,10 @@ const TrainerColumn = ({exercises, selectedMemberId}) => {
         {console.log("Exercises: ", exercises)}
         <SortableContext items={exercises} strategy={verticalListSortingStrategy}>
             {exercises.map((exercise) => (
-                <Exercise key={exercise.exercise_id} id={exercise.exercise_id} exercise={exercise}/>
+                <div key={exercise.exercise_id}>
+                    <Exercise id={exercise.exercise_id} exercise={exercise}/>
+                </div>
+                
             ))}
         </SortableContext>
     </div>
