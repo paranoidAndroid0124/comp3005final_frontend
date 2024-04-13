@@ -167,7 +167,7 @@ function AdminDashboard() {
                 },
                 body: JSON.stringify({
                     title: title,
-                    trainer: selectedTrainer.value,
+                    trainer_id: selectedTrainer.value,
                     startTime: startDateTime,
                     endTime: endDateTime,
                     capacity: capacity,
