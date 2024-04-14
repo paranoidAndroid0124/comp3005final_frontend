@@ -13,7 +13,8 @@ function AdminDashboard() {
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [capacity, setCapacity] = useState(1);
-    const [location, setLocation] = useState("");
+    const [locations, setLocations] = useState([]);
+    const [selectedLocation, setSelectedLocation] = useState("");
     const [price, setPrice] = useState("");
     // equipment states
     const [equipment, setEquipment] = useState([]);
@@ -35,7 +36,7 @@ function AdminDashboard() {
                 method: 'GET',
                 headers: {
                     //'Authorization' : token,
-                    'Content-type' : 'application/json'
+                    'Content-type': 'application/json'
                 }
             });
 
@@ -76,13 +77,14 @@ function AdminDashboard() {
                 last_maintained: equipment.last_maintained,
                 next_maintained: equipment.next_maintained,
             }));
-            setEquipment(equipments)
+            const sortedEquipments = equipments.sort((a, b) => a.equipment_id - b.equipment_id);
+            setEquipment(sortedEquipments)
         } catch (error) {
             console.log('There was an error while fetching equipment');
         }
     }
- 
-    const fetchMembers = async ()=> {
+
+    const fetchMembers = async () => {
         try {
             // get jwt token from localStorage
             const token = localStorage.getItem("token");
@@ -90,8 +92,8 @@ function AdminDashboard() {
             const response = await fetch('http://localhost:3001/member', {
                 method: 'GET',
                 headers: {
-                    'Authorization' : token,
-                    'content-type' : 'application/json'
+                    'Authorization': token,
+                    'content-type': 'application/json'
                 }
             });
 
@@ -100,7 +102,7 @@ function AdminDashboard() {
             }
 
             const data = await response.json();
-            const memberOptions = data.map(member =>({
+            const memberOptions = data.map(member => ({
                 value: member.user_id,
                 label: `${member.first_name} ${member.last_name}`,
             }));
@@ -110,12 +112,39 @@ function AdminDashboard() {
         }
     }
 
-    useEffect(() =>{
+    const fetchLocations = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/rooms', {
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Http error status: ' + response.status);
+            }
+
+            const data = await response.json();
+            const locationOptions = data.map(location => ({
+                value: location.room_id,
+                label: `${location.room_name}`,
+            }));
+
+            console.log("LocationOptions: ", locationOptions)
+            setLocations(locationOptions);
+        } catch (error) {
+            console.log('There was an error while fetching locations');
+        }
+    }
+
+    useEffect(() => {
         // TODO: code to run on component load
         console.log('Component was mounted');
-       fetchTrainers();
-       fetchMembers();
-       fetchEquipment();
+        fetchTrainers();
+        fetchMembers();
+        fetchEquipment();
+        fetchLocations();
         console.log('trainer name were added');
     }, []);
 
@@ -126,11 +155,11 @@ function AdminDashboard() {
         console.log(token);
 
         const response = await fetch('http://localhost:3001/member', {
-           method: 'GET',
-           headers: {
-               'Authorization':  token,
-               'Content-Type': 'application/json'
-           }
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            }
         });
 
         const data = await response.json();
@@ -146,6 +175,10 @@ function AdminDashboard() {
         setSelectedMember(selectOptions);
     }
 
+    const handleLocationChange = (selectedLocation) => {
+        setSelectedLocation(selectedLocation);
+    }
+
     const handleNewTimeSlot = async (event) => {
         event.preventDefault();
         // console.log(selectedTrainer.value);
@@ -159,11 +192,11 @@ function AdminDashboard() {
             const endDateTime = `${date} ${endTime}:00`;
 
             console.log('StartTime', startDateTime);
-
+            console.log("selectedLocation.value", selectedLocation.value)
             const response = await fetch('http://localhost:3001/timeslots/add', {
                 method: 'POST',
                 headers: {
-                    'Content-type' : 'application/json'
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify({
                     title: title,
@@ -171,43 +204,47 @@ function AdminDashboard() {
                     startTime: startDateTime,
                     endTime: endDateTime,
                     capacity: capacity,
-                    location: location,
+                    location: selectedLocation.value,
                     price: price,
                 })
             });
 
-            if(!response.ok) {
+            if (!response.ok) {
                 throw new Error(`Http error status: ${response.status}`);
+            } else {
+                alert(`"${title}" successfully created`)
+
             }
         } catch (error) {
+            alert(`There was an issue registering the timeslot: "${title}"`)
             console.error('There was an issue add new timeslot');
         }
     };
 
     const handleBillingInfo = async (event) => {
-      event.preventDefault();
-      try {
-        const response = await fetch('http://localhost:3001/member/billing/add', {
-            method: 'POST',
-            headers: {
-                'Content-type' : 'application/json'
-            },
-            body: JSON.stringify({
-                userId: selectedMember.value,
-                periodicity: periodicity,
-                cardType: cardType,
-                cardHolder: cardHolder,
-                cardNumber: cardNumber,
-                expiry: expiry,
-            })
-        });
+        event.preventDefault();
+        try {
+            const response = await fetch('http://localhost:3001/member/billing/add', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: selectedMember.value,
+                    periodicity: periodicity,
+                    cardType: cardType,
+                    cardHolder: cardHolder,
+                    cardNumber: cardNumber,
+                    expiry: expiry,
+                })
+            });
 
-        if (!response.ok) {
-            throw new Error(`Http error status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`Http error status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('There was an issue adding billing');
         }
-      } catch (error) {
-        console.error('There was an issue adding billing');
-      }
     };
 
     const handlePayment = async (event) => {
@@ -216,7 +253,7 @@ function AdminDashboard() {
             const response = await fetch('http://localhost:3001/member/payment/add', {
                 method: 'POST',
                 headers: {
-                    'Content-type' : 'application/json'
+                    'Content-type': 'application/json'
                 },
                 body: JSON.stringify(
                     {
@@ -237,34 +274,53 @@ function AdminDashboard() {
 
     const startTimeInput = document.getElementById("startTimeInput");
     const previousStartValue = startTime;
-    if (startTimeInput != null){
+    if (startTimeInput != null) {
         startTimeInput.onchange = () => {
             if (startTime < startTimeInput.min) {
-              console.log("Invalid Time!")
+                console.log("Invalid Time!")
                 setStartTime(previousStartValue);
             }
-          }  
+        }
     }
 
     const endTimeInput = document.getElementById("endTimeInput");
     const previousEndValue = endTime;
-    if (endTimeInput != null){
+    if (endTimeInput != null) {
         endTimeInput.onchange = () => {
             if (startTime < startTimeInput.min || endTime > endTimeInput.max) {
-              console.log("Invalid Time!")
+                console.log("Invalid Time!")
                 setEndTime(previousEndValue);
             }
-          }  
+        }
     }
 
-    function handleUpdate(equipment) {
+    const handleUpdate = async (equipment) => {
         // TODO: simple post request to update equipment maintanence to current time
-        console.log(equipment)
+        try {
+            const response = await fetch('http://localhost:3001/equipment/updateMaintenance', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(
+                    {
+                        equipmentID: equipment.item.equipment_id,
+                    }
+                )
+            });
+
+            if (!response.ok) {
+                throw new Error(`Http error status: ${response.status}`);
+            }
+        } catch (err) {
+            alert("Updating equipment failed.")
+            console.log(err)
+        }
     }
 
     return (
         <div>
-            <h1 style={{marginBottom: '20px'}}>My admin dashboard</h1>
+            <h1 style={{ marginBottom: '20px' }}>My admin dashboard</h1>
             <h2>Add Class to Schedule</h2>
             <form onSubmit={handleNewTimeSlot}>
                 <div>
@@ -297,7 +353,7 @@ function AdminDashboard() {
                         onChange={(e) => setStartTime(e.target.value)}
                         // TODO: change this to selectedTrainers availability
                         min="08:00"
-                        required/>
+                        required />
 
                     <h3>end time</h3>
                     <input
@@ -321,10 +377,10 @@ function AdminDashboard() {
                     />
 
                     <h3>location</h3>
-                    <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
+                    <Select
+                        value={selectedLocation}
+                        onChange={handleLocationChange}
+                        options={locations}
                     />
 
                     <h3>price</h3>
@@ -342,23 +398,23 @@ function AdminDashboard() {
             <h2>Equipment Maintenance</h2>
             <table>
                 <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Last Maintenance</th>
-                    <th>Next Maintenance</th>
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Last Maintenance</th>
+                        <th>Next Maintenance</th>
+                    </tr>
                 </thead>
                 <tbody>
-                {equipment.map((item) => (
-                    <tr key={item.equipment_id}>
-                        <td>{item.equipment_id}</td>
-                        <td>{item.equipment_name}</td>
-                        <td>{item.last_maintained}</td>
-                        <td>{item.next_maintained}</td>
-                        <td><button onClick={()=> handleUpdate({item})}>Updated maintenance</button></td>
-                    </tr>
-                ))}
+                    {equipment.map((item) => (
+                        <tr key={item.equipment_id}>
+                            <td>{item.equipment_id}</td>
+                            <td>{item.equipment_name}</td>
+                            <td>{item.last_maintained}</td>
+                            <td>{item.next_maintained}</td>
+                            <td><button onClick={() => handleUpdate({ item })}>Update Last Maintained</button></td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
             <h2>Class Schedule Updating</h2>

@@ -1,3 +1,7 @@
 h1 {
     margin: 10px;
 }
+
+.dropdown {
+    z-index: 9999;
+}
