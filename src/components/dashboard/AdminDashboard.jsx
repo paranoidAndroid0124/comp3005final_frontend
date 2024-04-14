@@ -192,7 +192,7 @@ function AdminDashboard() {
             const endDateTime = `${date} ${endTime}:00`;
 
             console.log('StartTime', startDateTime);
-
+            console.log("selectedLocation.value", selectedLocation.value)
             const response = await fetch('http://localhost:3001/timeslots/add', {
                 method: 'POST',
                 headers: {
@@ -204,7 +204,7 @@ function AdminDashboard() {
                     startTime: startDateTime,
                     endTime: endDateTime,
                     capacity: capacity,
-                    location: selectedLocation,
+                    location: selectedLocation.value,
                     price: price,
                 })
             });
