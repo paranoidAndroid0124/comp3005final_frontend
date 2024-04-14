@@ -7,7 +7,6 @@ const LoginPage = () => {
       <Navbar></Navbar>
       
       <Login></Login>
-      <Register></Register>
     </div>
   )
 }
